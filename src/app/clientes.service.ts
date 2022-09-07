@@ -16,4 +16,9 @@ export class ClientesService {
   salvar(cliente: Cliente): Observable<Cliente> {
     return this.http.post<Cliente>(this.apiUrl, cliente);
   }
+  
+  getClientes(): Observable<Cliente[]>{
+    return this.http.get<Cliente[]>(this.apiUrl)
+  }
+
 }
