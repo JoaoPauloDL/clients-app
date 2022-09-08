@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ClientesService } from 'src/app/clientes.service';
 
 import { Cliente } from '../clientes';
-
-import { ClientesService } from 'src/app/clientes.service';
 
 @Component({
   selector: 'app-clientes-form',
@@ -13,25 +13,54 @@ export class ClientesFormComponent implements OnInit {
   cliente: Cliente;
   success: boolean = false;
   errors: String[];
+  id: number;
 
-  constructor(private service: ClientesService) {
+  constructor(
+    private service: ClientesService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {
     this.cliente = new Cliente();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    let params: Params = this.activatedRoute.params;
+    if (params && params.value && params.value.id) {
+      this.id = params.value.id;
+      this.service.getClienteById(this.id).subscribe(
+        (response) => (this.cliente = response),
+        (errorResponse) => (this.cliente = new Cliente())
+      );
+    }
+  }
 
   onSubmit() {
-    this.service.salvar(this.cliente).subscribe(
-      (response) => {
-        this.success = true;
-        this.errors = null;
-        this.cliente = response;
-      },
-      (errorResponse) => {
-        this.success = false;
-        this.errors = errorResponse.error.errors;
-        
-      }
-    );
+    if (this.id) {
+      this.service.atualizar(this.cliente).subscribe(
+        (response) => {
+          this.success = true;
+          this.errors = null;
+        },
+        (errorResponse) => {
+          this.errors = ['Erro ao atualizar o cliente.']
+        }
+      );
+    } else {
+      this.service.salvar(this.cliente).subscribe(
+        (response) => {
+          this.success = true;
+          this.errors = null;
+          this.cliente = response;
+        },
+        (errorResponse) => {
+          this.success = false;
+          this.errors = errorResponse.error.errors;
+        }
+      );
+    }
+  }
+
+  voltarListagem() {
+    this.router.navigate(['/clientes-lista']);
   }
 }

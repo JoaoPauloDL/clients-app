@@ -5,8 +5,8 @@
 <div class="container">
   <div class="row">
     <div class="col-md-2">
-      <button routerLink="/clientes-form" class="btn btn-primary mb-3">
-        <i class="fa fa-plus"></i>Novo
+      <button (click)="novoCadastro()" class="btn btn-dark mb-3">
+        <i class="fa fa-plus"></i> Novo
       </button>
     </div>
   </div>
@@ -28,7 +28,14 @@
             <td>{{ cliente.nome }}</td>
             <td>{{ cliente.cpf }}</td>
             <td>{{ cliente.dataCadastro }}</td>
-            <td></td>
+            <td>
+              <button
+                class="btn btn-primary"
+                routerLink="/clientes-form/{{ cliente.id }}"
+              >
+                <i class="fa fa-pen-square"></i>
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
