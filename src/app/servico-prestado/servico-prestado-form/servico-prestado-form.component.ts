@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Cliente } from 'src/app/clientes/clientes';
 import { ClientesService } from 'src/app/clientes.service';
 import { ServicoPrestado } from '../servicoPrestado';
+import { ServicoPrestadoService } from 'src/app/servico-prestado.service';
 
 @Component({
   selector: 'app-servico-prestado-form',
@@ -10,9 +11,12 @@ import { ServicoPrestado } from '../servicoPrestado';
 })
 export class ServicoPrestadoFormComponent implements OnInit {
   clientes: Cliente[] = [];
-  servico : ServicoPrestado;
+  servico: ServicoPrestado;
 
-  constructor(private clientesService: ClientesService) {
+  constructor(
+    private clientesService: ClientesService,
+    private service: ServicoPrestadoService
+  ) {
     this.servico = new ServicoPrestado();
   }
 
@@ -22,9 +26,9 @@ export class ServicoPrestadoFormComponent implements OnInit {
       .subscribe((response) => (this.clientes = response));
   }
 
-  onSubmit(){
-    console.log(this.servico)
+  onSubmit() {
+    this.service
+      .salvar(this.servico)
+      .subscribe((response) => console.log(response));
   }
-
-
 }
