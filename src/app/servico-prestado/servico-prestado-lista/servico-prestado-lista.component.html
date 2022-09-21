@@ -3,7 +3,7 @@
   <li class="breadcrumb-bitem active">Consulta</li>
 </ol>
 <div class="container">
-  <form class="mb-4" #consultaForm="ngForm" (submit)="consultar()" >
+  <form class="mb-4" #consultaForm="ngForm" (submit)="consultar()">
     <div class="row">
       <div class="col-md-6">
         <label for="inputNome">Nome do Cliente</label>
@@ -18,20 +18,57 @@
 
       <div class="col-md-6">
         <label for="inputMes">Mês:</label>
-        <select [(ngModel)]="mes" name="mes"class="form-control">
+        <select [(ngModel)]="mes" name="mes" class="form-control">
           <option value="">Selecione...</option>
-          <option *ngFor="let mes of meses" [value]="mes" >
+          <option *ngFor="let mes of meses" [value]="mes">
             {{ mes }}
           </option>
         </select>
       </div>
     </div>
     <div class="row mt-4">
-        <div class="col-md-3">
-            <button class="btn btn-dark" type="submit ">
-                <i class="fa fa-search"></i> Consultar
-            </button>
-        </div>
+      <div class="col-md-12">
+        <button class="btn btn-primary" type="submit ">
+          <i class="fa fa-search"></i> Consultar
+        </button>
+
+        <button
+          class="btn btn-dark ml-3"
+          type="button "
+          routerLink="/servico-prestado-form"
+        >
+          <i class="fa fa-plus"></i> Novo
+        </button>
+      </div>
     </div>
   </form>
+
+  <div class="row">
+    <div class="center col-md-12">
+      <div class="alert alert-warning" role="alert" *ngIf="message">
+        {{ message }}
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Descrição</th>
+            <th>Preço</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of lista">
+            <td>{{ s.cliente.nome }}</td>
+            <td>{{ s.descricao }}</td>
+            <td>{{ s.valor }}</td>
+            <td>{{ s.data }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
